@@ -2,7 +2,7 @@ package com.vladislav.weatherforecast.Model;
 
 public class Main{
 	private double temp;
-	private double tempMin;
+	private double temp_min;
 	private double grnd_level;
 	private double temp_kf;
 	private int humidity;
@@ -18,12 +18,12 @@ public class Main{
 		return temp;
 	}
 
-	public void setTempMin(double tempMin){
-		this.tempMin = tempMin;
+	public void setTemp_min(double temp_min){
+		this.temp_min = temp_min;
 	}
 
-	public double getTempMin(){
-		return tempMin;
+	public double getTemp_min(){
+		return temp_min;
 	}
 
 	public void setGrnd_level(double grnd_level){

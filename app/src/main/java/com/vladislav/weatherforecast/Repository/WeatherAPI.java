@@ -11,6 +11,7 @@ public interface WeatherAPI {
     Call<Forecast> getForecast(
         @Query("lat") double lat,
         @Query("lon") double lon,
+        @Query("units") String units,
         @Query("appid") String key
     );
 }

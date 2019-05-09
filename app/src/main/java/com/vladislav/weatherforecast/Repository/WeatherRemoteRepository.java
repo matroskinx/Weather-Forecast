@@ -25,7 +25,7 @@ public class WeatherRemoteRepository {
 
         String key = "a839af55ddf7332d5ea98ca734692bfe";
         WeatherAPI api = retrofit.create(WeatherAPI.class);
-        Call<Forecast> call = api.getForecast(53.90, 27.57, key);
+        Call<Forecast> call = api.getForecast(53.90, 27.57, "metric", key);
 
         call.enqueue(new Callback<Forecast>() {
             @Override
