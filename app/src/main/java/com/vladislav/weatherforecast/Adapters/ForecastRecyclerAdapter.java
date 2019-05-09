@@ -44,18 +44,29 @@ public class ForecastRecyclerAdapter extends RecyclerView.Adapter<ForecastRecycl
         ListItem forecastItem;
         TextView forecastDesc;
         TextView forecastText;
+        TextView forecastTempHigh;
+        TextView forecastTempLow;
 
         ForecastHolder(View v) {
             super(v);
             this.view = v;
-            forecastDesc = view.findViewById(R.id.weather_decs);
-            forecastText = view.findViewById(R.id.weather_text);
+            forecastDesc = view.findViewById(R.id.weather_desc);
+            forecastText = view.findViewById(R.id.weather_date);
+            forecastTempHigh = view.findViewById(R.id.weather_temp_high);
+            forecastTempLow = view.findViewById(R.id.weather_temp_low);
         }
 
         void bindForecastItem(ListItem forecastItem) {
             this.forecastItem = forecastItem;
-            forecastDesc.setText(forecastItem.getWeather().get(0).getDescription());
-            forecastText.setText(Integer.toString(forecastItem.getDt()));
+
+            int dt = forecastItem.getDt();
+            String desc = forecastItem.getWeather().get(0).getDescription();
+            double min = forecastItem.getMain().getTemp_min();
+            double max = forecastItem.getMain().getTemp_max();
+            forecastText.setText(Integer.toString(dt));
+            forecastDesc.setText(desc);
+            forecastTempLow.setText(Double.toString(min));
+            forecastTempHigh.setText(Double.toString(max));
         }
     }
 }
