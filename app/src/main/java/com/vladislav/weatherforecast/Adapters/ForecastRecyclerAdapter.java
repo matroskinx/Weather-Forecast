@@ -10,6 +10,9 @@ import com.vladislav.weatherforecast.Model.Forecast;
 import com.vladislav.weatherforecast.Model.ListItem;
 import com.vladislav.weatherforecast.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -62,7 +65,12 @@ public class ForecastRecyclerAdapter extends RecyclerView.Adapter<ForecastRecycl
         void bindForecastItem(ListItem forecastItem) {
             this.forecastItem = forecastItem;
 
-            int dt = forecastItem.getDt();
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(forecastItem.getDt() * 1000L);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+            String formattedDate = dateFormat.format(cal.getTime());
+
+            //int dt = forecastItem.getDt();
             String desc = forecastItem.getWeather().get(0).getDescription();
             double min = forecastItem.getMain().getTemp_min();
             double max = forecastItem.getMain().getTemp_max();
@@ -70,10 +78,10 @@ public class ForecastRecyclerAdapter extends RecyclerView.Adapter<ForecastRecycl
             int weatherIcon = getIconId(weatherCondition);
 
             forecastIcon.setImageResource(weatherIcon);
-            forecastText.setText(Integer.toString(dt));
+            forecastText.setText(formattedDate);
             forecastDesc.setText(desc);
-            forecastTempLow.setText(Double.toString(min));
-            forecastTempHigh.setText(Double.toString(max));
+            forecastTempLow.setText(Double.toString(min) + "\u00b0");
+            forecastTempHigh.setText(Double.toString(max) + "\u00b0");
         }
     }
 
