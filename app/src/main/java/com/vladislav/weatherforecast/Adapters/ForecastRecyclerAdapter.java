@@ -3,6 +3,7 @@ package com.vladislav.weatherforecast.Adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.vladislav.weatherforecast.Model.Forecast;
 import com.vladislav.weatherforecast.Model.ListItem;
@@ -38,17 +39,23 @@ public class ForecastRecyclerAdapter extends RecyclerView.Adapter<ForecastRecycl
         return forecast.getList().size();
     }
 
-    public class ForecastHolder extends RecyclerView.ViewHolder{
-        private View view;
+    class ForecastHolder extends RecyclerView.ViewHolder {
+        View view;
         ListItem forecastItem;
-        public ForecastHolder(View v) {
+        TextView forecastDesc;
+        TextView forecastText;
+
+        ForecastHolder(View v) {
             super(v);
             this.view = v;
+            forecastDesc = view.findViewById(R.id.weather_decs);
+            forecastText = view.findViewById(R.id.weather_text);
         }
 
-        public void bindForecastItem(ListItem forecastItem) {
+        void bindForecastItem(ListItem forecastItem) {
             this.forecastItem = forecastItem;
-            //view.
+            forecastDesc.setText(forecastItem.getWeather().get(0).getDescription());
+            forecastText.setText(Integer.toString(forecastItem.getDt()));
         }
     }
 }
