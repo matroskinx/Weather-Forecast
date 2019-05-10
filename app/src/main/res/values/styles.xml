@@ -1,5 +1,27 @@
 <resources>
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light">
+
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
+        <item name="colorOnPrimary">@color/primaryTextColor</item>
+        <item name="colorSecondary">@color/secondaryColor</item>
+        <item name="colorSecondaryVariant">@color/secondaryDarkColor</item>
+        <item name="colorOnSecondary">@color/secondaryTextColor</item>
+        <!--<item name="colorError">#F44336</item>-->
+        <!--<item name="colorOnError">#FFFFFF</item>-->
+        <!--<item name="colorSurface">#FFFFFF</item>-->
+        <!--<item name="colorOnSurface">#212121</item>-->
+
+
+        <!--<color name="primaryColor">#42a5f5</color>-->
+        <!--<color name="primaryLightColor">#80d6ff</color>-->
+        <!--<color name="primaryDarkColor">#0077c2</color>-->
+        <!--<color name="secondaryColor">#1565c0</color>-->
+        <!--<color name="secondaryLightColor">#5e92f3</color>-->
+        <!--<color name="secondaryDarkColor">#003c8f</color>-->
+        <!--<color name="primaryTextColor">#000000</color>-->
+        <!--<color name="secondaryTextColor">#ffffff</color>-->
+
         <!--<item name="colorPrimary">@color/colorPrimary</item>-->
         <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
         <!--<item name="colorAccent">@color/colorAccent</item>-->

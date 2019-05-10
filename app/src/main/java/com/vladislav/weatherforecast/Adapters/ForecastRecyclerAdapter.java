@@ -94,34 +94,34 @@ public class ForecastRecyclerAdapter extends RecyclerView.Adapter<ForecastRecycl
         int value;
         switch (code) {
             case "01":
-                value = R.drawable.ic_sunny;
+                value = R.drawable.ic_sunrise;
                 break;
             case "02":
-                value = R.drawable.ic_cloud;
+                value = R.drawable.ic_cloudy;
                 break;
             case "03":
-                value = R.drawable.ic_cloud;
+                value = R.drawable.ic_cloudy;
                 break;
             case "04":
-                value = R.drawable.ic_cloud;
+                value = R.drawable.ic_cloudy;
                 break;
             case "09":
-                value = R.drawable.ic_rain;
+                value = R.drawable.ic_rainy;
                 break;
             case "10":
-                value = R.drawable.ic_rain;
+                value = R.drawable.ic_rainy;
                 break;
             case "11":
-                value = R.drawable.ic_thunder;
+                value = R.drawable.ic_thunderstorm;
                 break;
             case "13":
-                value = R.drawable.ic_snow;
+                value = R.drawable.ic_snowy;
                 break;
             case "50":
-                value = R.drawable.ic_mist;
+                value = R.drawable.ic_foggy;
                 break;
             default:
-                value = R.drawable.ic_sunny;
+                value = R.drawable.ic_sunrise;
                 break;
         }
         return value;
