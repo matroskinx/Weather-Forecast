@@ -41,10 +41,11 @@ public class ForecastActivity extends AppCompatActivity {
             }
         };
 
-        Observer<Map<Integer, List<ListItem>>> dayMapObserver = new Observer<Map<Integer, List<ListItem>>>() {
+        Observer<Forecast> forecastObserver = new Observer<Forecast>() {
             @Override
-            public void onChanged(Map<Integer, List<ListItem>> dayMap) {
-                adapter = new ForecastRecyclerAdapter(dayMap);
+            public void onChanged(Forecast forecast) {
+                Map<Integer, List<ListItem>> dayMap = viewmodel.DivideWeatherByDays(forecast);
+                adapter = new ForecastRecyclerAdapter(dayMap, forecast);
                 linearLayoutManager = new LinearLayoutManager(ForecastActivity.this);
                 rv_forecast.setLayoutManager(linearLayoutManager);
                 rv_forecast.setAdapter(adapter);
@@ -52,8 +53,7 @@ public class ForecastActivity extends AppCompatActivity {
         };
 
         viewmodel.errorMessage.observe(this, errorObserver);
-        viewmodel.dayMap.observe(this, dayMapObserver);
-
+        viewmodel.forecastValue.observe(this, forecastObserver);
         viewmodel.getWeather();
     }
 }
