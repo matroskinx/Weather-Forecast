@@ -6,6 +6,7 @@ import com.vladislav.weatherforecast.Model.ListItem;
 import com.vladislav.weatherforecast.Repository.WeatherRemoteRepository;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,8 @@ public class ForecastViewModel extends ViewModel {
 
     public MutableLiveData<String> errorMessage = new MutableLiveData<>();
 
+    public MutableLiveData<Map<Integer, List<ListItem>>> dayMap = new MutableLiveData<>();
+
     private WeatherRemoteRepository weatherRemoteRepo = new WeatherRemoteRepository();
 
     public void getWeather() {
@@ -26,7 +29,7 @@ public class ForecastViewModel extends ViewModel {
             @Override
             public void onSuccess(Forecast forecast) {
                 forecastValue.postValue(forecast);
-                DivideWeatherByDays(forecast);
+                dayMap.postValue(DivideWeatherByDays(forecast));
             }
 
             @Override

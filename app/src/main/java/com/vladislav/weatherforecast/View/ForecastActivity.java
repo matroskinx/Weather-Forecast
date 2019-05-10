@@ -11,8 +11,12 @@ import android.widget.Toast;
 
 import com.vladislav.weatherforecast.Adapters.ForecastRecyclerAdapter;
 import com.vladislav.weatherforecast.Model.Forecast;
+import com.vladislav.weatherforecast.Model.ListItem;
 import com.vladislav.weatherforecast.R;
 import com.vladislav.weatherforecast.Viewmodel.ForecastViewModel;
+
+import java.util.List;
+import java.util.Map;
 
 public class ForecastActivity extends AppCompatActivity {
 
@@ -37,10 +41,10 @@ public class ForecastActivity extends AppCompatActivity {
             }
         };
 
-        Observer<Forecast> forecastObserver = new Observer<Forecast>() {
+        Observer<Map<Integer, List<ListItem>>> dayMapObserver = new Observer<Map<Integer, List<ListItem>>>() {
             @Override
-            public void onChanged(Forecast forecast) {
-                adapter = new ForecastRecyclerAdapter(forecast);
+            public void onChanged(Map<Integer, List<ListItem>> dayMap) {
+                adapter = new ForecastRecyclerAdapter(dayMap);
                 linearLayoutManager = new LinearLayoutManager(ForecastActivity.this);
                 rv_forecast.setLayoutManager(linearLayoutManager);
                 rv_forecast.setAdapter(adapter);
@@ -48,7 +52,7 @@ public class ForecastActivity extends AppCompatActivity {
         };
 
         viewmodel.errorMessage.observe(this, errorObserver);
-        viewmodel.forecastValue.observe(this, forecastObserver);
+        viewmodel.dayMap.observe(this, dayMapObserver);
 
         viewmodel.getWeather();
     }

@@ -6,22 +6,25 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.vladislav.weatherforecast.Model.Forecast;
 import com.vladislav.weatherforecast.Model.ListItem;
 import com.vladislav.weatherforecast.R;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
+import androidx.core.util.Pair;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ForecastRecyclerAdapter extends RecyclerView.Adapter<ForecastRecyclerAdapter.ForecastHolder> {
 
-    private Forecast forecast;
+    private Map<Integer, List<ListItem>> dayMap;
 
-    public ForecastRecyclerAdapter(Forecast forecast) {
-        this.forecast = forecast;
+    public ForecastRecyclerAdapter(Map<Integer, List<ListItem>> dayMap) {
+        this.dayMap = dayMap;
     }
 
     @NonNull
@@ -34,18 +37,19 @@ public class ForecastRecyclerAdapter extends RecyclerView.Adapter<ForecastRecycl
 
     @Override
     public void onBindViewHolder(@NonNull ForecastRecyclerAdapter.ForecastHolder holder, int position) {
-        ListItem forecastItem = forecast.getList().get(position);
-        holder.bindForecastItem(forecastItem);
+        ArrayList<List<ListItem>> dayMapValues = new ArrayList<>(dayMap.values());
+        List<ListItem> dayForecast = dayMapValues.get(position);
+        holder.bindForecastItem(dayForecast);
     }
 
     @Override
     public int getItemCount() {
-        return forecast.getList().size();
+        return dayMap.size();
     }
 
     class ForecastHolder extends RecyclerView.ViewHolder {
         View view;
-        ListItem forecastItem;
+        List<ListItem> dayForecast;
         ImageView forecastIcon;
         TextView forecastDesc;
         TextView forecastText;
@@ -62,26 +66,26 @@ public class ForecastRecyclerAdapter extends RecyclerView.Adapter<ForecastRecycl
             forecastTempLow = view.findViewById(R.id.weather_temp_low);
         }
 
-        void bindForecastItem(ListItem forecastItem) {
-            this.forecastItem = forecastItem;
+        void bindForecastItem(List<ListItem> dayForecast) {
+            this.dayForecast = dayForecast;
 
             Calendar cal = Calendar.getInstance();
-            cal.setTimeInMillis(forecastItem.getDt() * 1000L);
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+            cal.setTimeInMillis(dayForecast.get(0).getDt() * 1000L);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
             String formattedDate = dateFormat.format(cal.getTime());
 
-            //int dt = forecastItem.getDt();
-            String desc = forecastItem.getWeather().get(0).getDescription();
-            double min = forecastItem.getMain().getTemp_min();
-            double max = forecastItem.getMain().getTemp_max();
-            String weatherCondition = forecastItem.getWeather().get(0).getIcon();
+            Pair<Double, Double> minMaxTemp = findMinMaxTemp(dayForecast);
+            String desc = dayForecast.get(0).getWeather().get(0).getDescription();
+            double min = minMaxTemp.first;
+            double max = minMaxTemp.second;
+            String weatherCondition = dayForecast.get(0).getWeather().get(0).getIcon();
             int weatherIcon = getIconId(weatherCondition);
 
             forecastIcon.setImageResource(weatherIcon);
             forecastText.setText(formattedDate);
             forecastDesc.setText(desc);
-            forecastTempLow.setText(Double.toString(min) + "\u00b0");
-            forecastTempHigh.setText(Double.toString(max) + "\u00b0");
+            forecastTempLow.setText(Double.toString(Math.round(min)) + "\u00b0");
+            forecastTempHigh.setText(Double.toString(Math.round(max)) + "\u00b0");
         }
     }
 
@@ -121,5 +125,22 @@ public class ForecastRecyclerAdapter extends RecyclerView.Adapter<ForecastRecycl
                 break;
         }
         return value;
+    }
+
+    private Pair<Double, Double> findMinMaxTemp(List<ListItem> day) {
+
+        Double min = day.get(0).getMain().getTemp();
+        Double max = day.get(0).getMain().getTemp();
+
+        for(ListItem item: day) {
+            Double temp = item.getMain().getTemp();
+            if(temp > max) {
+                max = temp;
+            }
+            else if (temp < min) {
+                min = temp;
+            }
+        }
+        return new Pair<>(min, max);
     }
 }
