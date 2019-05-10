@@ -1,8 +1,7 @@
 package com.vladislav.weatherforecast.Viewmodel;
 
-import android.util.Log;
-
 import com.vladislav.weatherforecast.Model.Forecast;
+import com.vladislav.weatherforecast.Model.ForecastItem;
 import com.vladislav.weatherforecast.Model.ListItem;
 import com.vladislav.weatherforecast.Repository.WeatherRemoteRepository;
 
@@ -16,8 +15,10 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class ForecastViewModel extends ViewModel {
-    public MutableLiveData<Forecast> forecastValue = new MutableLiveData<>();
     public MutableLiveData<String> errorMessage = new MutableLiveData<>();
+
+    public MutableLiveData<List<ForecastItem>> forecastItems = new MutableLiveData<>();
+
     private WeatherRemoteRepository weatherRemoteRepo = new WeatherRemoteRepository();
 
     public void getWeather() {
@@ -25,7 +26,8 @@ public class ForecastViewModel extends ViewModel {
         weatherRemoteRepo.getWeatherData(new WeatherRemoteRepository.OnRequestComplete() {
             @Override
             public void onSuccess(Forecast forecast) {
-                forecastValue.postValue(forecast);
+                List<ForecastItem> flattenedForecastItems = flattenForecastByDays(forecast);
+                forecastItems.postValue(flattenedForecastItems);
             }
 
             @Override
@@ -35,18 +37,17 @@ public class ForecastViewModel extends ViewModel {
         });
     }
 
-    public Map<Integer, List<ListItem>> DivideWeatherByDays(Forecast forecast) {
-        List<ListItem> items = forecast.getList();
-        Map<Integer, List<ListItem>> dayMap = new HashMap<>();
+    public Map<Integer, List<ForecastItem>> DivideForecastByDays(List<ForecastItem> forecastItems) {
 
-        for (ListItem item : items) {
+        Map<Integer, List<ForecastItem>> dayMap = new HashMap<>();
+        for (ForecastItem item : forecastItems) {
             int dt = item.getDt();
             Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(dt * 1000L);
             int day = cal.get(Calendar.DAY_OF_MONTH);
 
             if (!dayMap.containsKey(day)) {
-                ArrayList<ListItem> list = new ArrayList<>();
+                ArrayList<ForecastItem> list = new ArrayList<>();
                 list.add(item);
                 dayMap.put(day, list);
             } else {
@@ -55,6 +56,22 @@ public class ForecastViewModel extends ViewModel {
         }
 
         return dayMap;
+    }
+
+    private List<ForecastItem> flattenForecastByDays(Forecast forecast) {
+        List<ForecastItem> flattenedList = new ArrayList<>();
+
+        for (ListItem item : forecast.getList()) {
+            ForecastItem obj = new ForecastItem();
+            obj.setDt(item.getDt());
+            obj.setDescription(item.getWeather().get(0).getDescription());
+            obj.setTemp(item.getMain().getTemp());
+            obj.setIcon(item.getWeather().get(0).getIcon());
+            obj.setCity(forecast.getCity().getName());
+            flattenedList.add(obj);
+        }
+
+        return flattenedList;
     }
 }
 
