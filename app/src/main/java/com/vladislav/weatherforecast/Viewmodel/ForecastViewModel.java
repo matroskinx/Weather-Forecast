@@ -52,14 +52,17 @@ public class ForecastViewModel extends AndroidViewModel {
                 dayMap.get(day).add(item);
             }
         }
-
+        Map<Integer, List<ForecastItem>> fakeDayMap = new LinkedHashMap<>();
         if (dayMap.size() == 5) {
+
             /*
                 Insert fake day entry if we have no forecasts left for today
                 and have 8 forecasts for each of the five next days.
                 In general case, map have 6 entries.
             */
-            dayMap.put(-1, new ArrayList<ForecastItem>());
+            fakeDayMap.put(-1, new ArrayList<ForecastItem>());
+            fakeDayMap.putAll(dayMap);
+            return fakeDayMap;
         }
 
         return dayMap;
