@@ -8,15 +8,22 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Transaction;
 
 @Dao
-public interface ForecastDao {
+public abstract class ForecastDao {
     @Insert
-    void insertAll(List<ForecastItem> forecastItems);
+    public abstract  void insertAll(List<ForecastItem> forecastItems);
 
     @Query("DELETE FROM Forecast_table")
-    void clear();
+    abstract void deleteAll();
 
     @Query("SELECT * FROM FORECAST_TABLE order by dt asc")
-    LiveData<List<ForecastItem>> getAllForecastItems();
+    public abstract LiveData<List<ForecastItem>> getAllForecastItems();
+
+    @Transaction
+    public void dropThenInsertAll(List<ForecastItem> forecastItems) {
+        deleteAll();
+        insertAll(forecastItems);
+    }
 }

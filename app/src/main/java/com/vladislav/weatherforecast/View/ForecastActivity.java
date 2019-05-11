@@ -31,8 +31,8 @@ public class ForecastActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Intent intent = this.getIntent();
-        Double lat = intent.getDoubleExtra(MapsActivity.LAT_KEY, 0);
-        Double lng = intent.getDoubleExtra(MapsActivity.LNG_KEY, 0);
+        final Double lat = intent.getDoubleExtra(MapsActivity.LAT_KEY, 0);
+        final Double lng = intent.getDoubleExtra(MapsActivity.LNG_KEY, 0);
 
         setContentView(R.layout.activity_forecast);
 
@@ -46,18 +46,7 @@ public class ForecastActivity extends AppCompatActivity {
             }
         };
 
-        Observer<List<ForecastItem>> flatForecastObserver = new Observer<List<ForecastItem>>() {
-            @Override
-            public void onChanged(List<ForecastItem> forecastItems) {
-                Map<Integer, List<ForecastItem>> dayMap = viewmodel.DivideForecastByDays(forecastItems);
-                adapter = new ForecastRecyclerAdapter(dayMap, forecastItems);
-                linearLayoutManager = new LinearLayoutManager(ForecastActivity.this);
-                rv_forecast.setLayoutManager(linearLayoutManager);
-                rv_forecast.setAdapter(adapter);
-            }
-        };
-
-        Observer<List<ForecastItem>> localObserver = new Observer<List<ForecastItem>>() {
+        Observer<List<ForecastItem>> mainObserver = new Observer<List<ForecastItem>>() {
             @Override
             public void onChanged(List<ForecastItem> forecastItems) {
                 Map<Integer, List<ForecastItem>> dayMap = viewmodel.DivideForecastByDays(forecastItems);
@@ -69,8 +58,6 @@ public class ForecastActivity extends AppCompatActivity {
         };
 
         viewmodel.errorMessage.observe(this, errorObserver);
-        viewmodel.forecastItems.observe(this, flatForecastObserver);
-        viewmodel.localForecastItems.observe(this, localObserver);
-        viewmodel.getWeather(lat, lng);
+        viewmodel.forecastItems.observe(this, mainObserver);
     }
 }

@@ -42,5 +42,25 @@ public class LocalWeatherRepository {
             return null;
         }
     }
+
+    public void dropAndInsertAll(List<ForecastItem> forecastItems) {
+        new DropThenInsertAllAsyncTask(forecastDao).execute(forecastItems);
+    }
+
+    private static class DropThenInsertAllAsyncTask extends AsyncTask<List<ForecastItem>, Void, Void> {
+        private ForecastDao mAsyncTaskDao;
+
+        DropThenInsertAllAsyncTask(ForecastDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+
+        @Override
+        protected Void doInBackground(List<ForecastItem>... lists) {
+            mAsyncTaskDao.dropThenInsertAll(lists[0]);
+            return null;
+        }
+    }
+
 }
 

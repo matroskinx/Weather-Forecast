@@ -2,11 +2,8 @@ package com.vladislav.weatherforecast.Viewmodel;
 
 import android.app.Application;
 
-import com.vladislav.weatherforecast.Model.Forecast;
 import com.vladislav.weatherforecast.Model.ForecastItem;
-import com.vladislav.weatherforecast.Model.ListItem;
-import com.vladislav.weatherforecast.Repository.LocalWeatherRepository;
-import com.vladislav.weatherforecast.Repository.WeatherRemoteRepository;
+import com.vladislav.weatherforecast.Repository.WeatherRepository;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -20,33 +17,17 @@ import androidx.lifecycle.MutableLiveData;
 
 public class ForecastViewModel extends AndroidViewModel {
     public MutableLiveData<String> errorMessage = new MutableLiveData<>();
-    public MutableLiveData<List<ForecastItem>> forecastItems = new MutableLiveData<>();
-
-    public LiveData<List<ForecastItem>> localForecastItems = new MutableLiveData<>();
-
-    private WeatherRemoteRepository weatherRemoteRepo = new WeatherRemoteRepository();
-    private LocalWeatherRepository weatherLocalRepo;
+    private WeatherRepository forecastRepo;
+    public LiveData<List<ForecastItem>> forecastItems;
 
     public ForecastViewModel(Application application) {
         super(application);
-        weatherLocalRepo = new LocalWeatherRepository(application);
-        localForecastItems = weatherLocalRepo.getForecastItems();
+        forecastRepo = new WeatherRepository(application);
+        forecastItems = forecastRepo.getWeather();
     }
 
-    public void getWeather(Double lat, Double lng) {
-
-        weatherRemoteRepo.getWeatherData(lat, lng, new WeatherRemoteRepository.OnRequestComplete() {
-            @Override
-            public void onSuccess(Forecast forecast) {
-                List<ForecastItem> flattenedForecastItems = flattenForecastByDays(forecast);
-                forecastItems.postValue(flattenedForecastItems);
-            }
-
-            @Override
-            public void onFailure(String exceptionMessage) {
-                errorMessage.postValue(exceptionMessage);
-            }
-        });
+    public void SetNewCoords(Double lat, Double lng) {
+        forecastRepo.refreshDataWithCoords(lat, lng);
     }
 
     public Map<Integer, List<ForecastItem>> DivideForecastByDays(List<ForecastItem> forecastItems) {
@@ -77,22 +58,6 @@ public class ForecastViewModel extends AndroidViewModel {
         }
 
         return dayMap;
-    }
-
-    private List<ForecastItem> flattenForecastByDays(Forecast forecast) {
-        List<ForecastItem> flattenedList = new ArrayList<>();
-
-        for (ListItem item : forecast.getList()) {
-            ForecastItem obj = new ForecastItem();
-            obj.setDt(item.getDt());
-            obj.setDescription(item.getWeather().get(0).getDescription());
-            obj.setTemp(item.getMain().getTemp());
-            obj.setIcon(item.getWeather().get(0).getIcon());
-            obj.setCity(forecast.getCity().getName());
-            flattenedList.add(obj);
-        }
-
-        return flattenedList;
     }
 }
 

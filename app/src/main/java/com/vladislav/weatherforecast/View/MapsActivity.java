@@ -1,11 +1,9 @@
 package com.vladislav.weatherforecast.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -13,13 +11,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.vladislav.weatherforecast.Model.Forecast;
 import com.vladislav.weatherforecast.R;
-import com.vladislav.weatherforecast.Repository.WeatherRemoteRepository;
-import com.vladislav.weatherforecast.Repository.WeatherRemoteRepository.OnRequestComplete;
+
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
