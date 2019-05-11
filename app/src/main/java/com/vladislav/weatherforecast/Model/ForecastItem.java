@@ -1,6 +1,16 @@
 package com.vladislav.weatherforecast.Model;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "Forecast_table")
 public class ForecastItem {
+
+    @PrimaryKey(autoGenerate = true)
+    @NonNull
+    private Integer id;
+
     private int dt;
     private double temp;
     private String description;
@@ -45,5 +55,14 @@ public class ForecastItem {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    @NonNull
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(@NonNull Integer id) {
+        this.id = id;
     }
 }

@@ -10,9 +10,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.vladislav.weatherforecast.Adapters.ForecastRecyclerAdapter;
-import com.vladislav.weatherforecast.Model.Forecast;
 import com.vladislav.weatherforecast.Model.ForecastItem;
-import com.vladislav.weatherforecast.Model.ListItem;
 import com.vladislav.weatherforecast.R;
 import com.vladislav.weatherforecast.Viewmodel.ForecastViewModel;
 
@@ -53,8 +51,20 @@ public class ForecastActivity extends AppCompatActivity {
             }
         };
 
+        Observer<List<ForecastItem>> localObserver = new Observer<List<ForecastItem>>() {
+            @Override
+            public void onChanged(List<ForecastItem> forecastItems) {
+                Map<Integer, List<ForecastItem>> dayMap = viewmodel.DivideForecastByDays(forecastItems);
+                adapter = new ForecastRecyclerAdapter(dayMap, forecastItems);
+                linearLayoutManager = new LinearLayoutManager(ForecastActivity.this);
+                rv_forecast.setLayoutManager(linearLayoutManager);
+                rv_forecast.setAdapter(adapter);
+            }
+        };
+
         viewmodel.errorMessage.observe(this, errorObserver);
         viewmodel.forecastItems.observe(this, flatForecastObserver);
+        viewmodel.localForecastItems.observe(this, localObserver);
         viewmodel.getWeather();
     }
 }
