@@ -1,6 +1,7 @@
 package com.vladislav.weatherforecast.Repository;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.vladislav.weatherforecast.Model.Forecast;
@@ -16,13 +17,24 @@ public class WeatherRepository {
 
     private LocalWeatherRepository localRepo;
     private WeatherRemoteRepository remoteRepo;
+    private SharedPrerencesRepository sharedPrefsRepo;
 
-    public WeatherRepository(Application application) {
+    public static String SP_LAT = "sp_lat";
+    public static String SP_LNG = "sp_lng";
+
+    public WeatherRepository(Application application, SharedPreferences sharedPreferences) {
         localRepo = new LocalWeatherRepository(application);
         remoteRepo = new WeatherRemoteRepository();
+        sharedPrefsRepo = new SharedPrerencesRepository(sharedPreferences);
     }
 
     public LiveData<List<ForecastItem>> getWeather() {
+
+        if(sharedPrefsRepo.hasLatLng()) {
+            double lat = sharedPrefsRepo.getLat();
+            double lng = sharedPrefsRepo.getLng();
+            refreshDataWithCoords(lat, lng);
+        }
         return localRepo.getForecastItems();
     }
 
@@ -39,6 +51,7 @@ public class WeatherRepository {
                 Log.d("WeatherRepoDB", exceptionMessage);
             }
         });
+        sharedPrefsRepo.saveLatLng(lat, lng);
     }
 
     private List<ForecastItem> flattenForecastByDays(Forecast forecast) {

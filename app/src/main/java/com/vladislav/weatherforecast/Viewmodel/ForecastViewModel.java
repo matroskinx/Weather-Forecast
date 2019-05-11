@@ -1,6 +1,7 @@
 package com.vladislav.weatherforecast.Viewmodel;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.vladislav.weatherforecast.Model.ForecastItem;
 import com.vladislav.weatherforecast.Repository.WeatherRepository;
@@ -19,10 +20,14 @@ public class ForecastViewModel extends AndroidViewModel {
     public MutableLiveData<String> errorMessage = new MutableLiveData<>();
     private WeatherRepository forecastRepo;
     public LiveData<List<ForecastItem>> forecastItems;
+    public double currentLat;
+    public double currentLng;
+
+    public static String SHARED_PREFS_NAME = "LatLng";
 
     public ForecastViewModel(Application application) {
         super(application);
-        forecastRepo = new WeatherRepository(application);
+        forecastRepo = new WeatherRepository(application, getApplication().getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE));
         forecastItems = forecastRepo.getWeather();
     }
 

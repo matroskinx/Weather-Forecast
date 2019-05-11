@@ -1,13 +1,18 @@
 package com.vladislav.weatherforecast.View;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.vladislav.weatherforecast.Adapters.ForecastRecyclerAdapter;
@@ -25,15 +30,11 @@ public class ForecastActivity extends AppCompatActivity {
     RecyclerView rv_forecast;
     LinearLayoutManager linearLayoutManager;
 
+    public static final int GET_LOCATION = 91;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Intent intent = this.getIntent();
-        final Double lat = intent.getDoubleExtra(MapsActivity.LAT_KEY, 0);
-        final Double lng = intent.getDoubleExtra(MapsActivity.LNG_KEY, 0);
-
         setContentView(R.layout.activity_forecast);
 
         rv_forecast = (RecyclerView) findViewById(R.id.rv_forecast);
@@ -59,5 +60,38 @@ public class ForecastActivity extends AppCompatActivity {
 
         viewmodel.errorMessage.observe(this, errorObserver);
         viewmodel.forecastItems.observe(this, mainObserver);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.forecast_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+
+        if (item.getItemId() == R.id.map_dest) {
+            Intent intent = new Intent(this, MapsActivity.class);
+            startActivityForResult(intent, GET_LOCATION);
+        }
+        return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == GET_LOCATION) {
+            if (resultCode == Activity.RESULT_OK) {
+                Double lat = data.getDoubleExtra(MapsActivity.LAT_KEY, 0);
+                Double lng = data.getDoubleExtra(MapsActivity.LNG_KEY, 0);
+                Toast.makeText(this, String.format("%f %f", lat, lng), Toast.LENGTH_LONG).show();
+                viewmodel.SetNewCoords(lat, lng);
+
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                Toast.makeText(this, "No choice", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }

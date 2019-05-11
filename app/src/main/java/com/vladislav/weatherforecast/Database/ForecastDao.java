@@ -13,7 +13,7 @@ import androidx.room.Transaction;
 @Dao
 public abstract class ForecastDao {
     @Insert
-    public abstract  void insertAll(List<ForecastItem> forecastItems);
+    public abstract void insertAll(List<ForecastItem> forecastItems);
 
     @Query("DELETE FROM Forecast_table")
     abstract void deleteAll();
