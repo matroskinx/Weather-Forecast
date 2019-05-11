@@ -176,7 +176,7 @@
 
     <TextView
         android:id="@+id/weather_today_city"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="TextView"

@@ -1,25 +1,37 @@
 package com.vladislav.weatherforecast.Viewmodel;
 
+import android.app.Application;
+
 import com.vladislav.weatherforecast.Model.Forecast;
 import com.vladislav.weatherforecast.Model.ForecastItem;
 import com.vladislav.weatherforecast.Model.ListItem;
+import com.vladislav.weatherforecast.Repository.LocalWeatherRepository;
 import com.vladislav.weatherforecast.Repository.WeatherRemoteRepository;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
-public class ForecastViewModel extends ViewModel {
+public class ForecastViewModel extends AndroidViewModel {
     public MutableLiveData<String> errorMessage = new MutableLiveData<>();
-
     public MutableLiveData<List<ForecastItem>> forecastItems = new MutableLiveData<>();
 
+    public LiveData<List<ForecastItem>> localForecastItems = new MutableLiveData<>();
+
     private WeatherRemoteRepository weatherRemoteRepo = new WeatherRemoteRepository();
+    private LocalWeatherRepository weatherLocalRepo;
+
+    public ForecastViewModel(Application application) {
+        super(application);
+        weatherLocalRepo = new LocalWeatherRepository(application);
+        localForecastItems = weatherLocalRepo.getForecastItems();
+    }
 
     public void getWeather() {
 
@@ -39,7 +51,7 @@ public class ForecastViewModel extends ViewModel {
 
     public Map<Integer, List<ForecastItem>> DivideForecastByDays(List<ForecastItem> forecastItems) {
 
-        Map<Integer, List<ForecastItem>> dayMap = new HashMap<>();
+        Map<Integer, List<ForecastItem>> dayMap = new LinkedHashMap<>();
         for (ForecastItem item : forecastItems) {
             int dt = item.getDt();
             Calendar cal = Calendar.getInstance();
@@ -53,6 +65,15 @@ public class ForecastViewModel extends ViewModel {
             } else {
                 dayMap.get(day).add(item);
             }
+        }
+
+        if (dayMap.size() == 5) {
+            /*
+                Insert fake day entry if we have no forecasts left for today
+                and have 8 forecasts for each of the five next days.
+                In general case, map have 6 entries.
+            */
+            dayMap.put(-1, new ArrayList<ForecastItem>());
         }
 
         return dayMap;
