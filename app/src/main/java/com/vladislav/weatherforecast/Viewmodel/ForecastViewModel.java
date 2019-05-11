@@ -33,9 +33,9 @@ public class ForecastViewModel extends AndroidViewModel {
         localForecastItems = weatherLocalRepo.getForecastItems();
     }
 
-    public void getWeather() {
+    public void getWeather(Double lat, Double lng) {
 
-        weatherRemoteRepo.getWeatherData(new WeatherRemoteRepository.OnRequestComplete() {
+        weatherRemoteRepo.getWeatherData(lat, lng, new WeatherRemoteRepository.OnRequestComplete() {
             @Override
             public void onSuccess(Forecast forecast) {
                 List<ForecastItem> flattenedForecastItems = flattenForecastByDays(forecast);

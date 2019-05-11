@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -28,6 +29,11 @@ public class ForecastActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent intent = this.getIntent();
+        Double lat = intent.getDoubleExtra(MapsActivity.LAT_KEY, 0);
+        Double lng = intent.getDoubleExtra(MapsActivity.LNG_KEY, 0);
+
         setContentView(R.layout.activity_forecast);
 
         rv_forecast = (RecyclerView) findViewById(R.id.rv_forecast);
@@ -65,6 +71,6 @@ public class ForecastActivity extends AppCompatActivity {
         viewmodel.errorMessage.observe(this, errorObserver);
         viewmodel.forecastItems.observe(this, flatForecastObserver);
         viewmodel.localForecastItems.observe(this, localObserver);
-        viewmodel.getWeather();
+        viewmodel.getWeather(lat, lng);
     }
 }

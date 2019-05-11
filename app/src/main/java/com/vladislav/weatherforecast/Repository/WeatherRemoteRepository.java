@@ -17,7 +17,7 @@ public class WeatherRemoteRepository {
         void onFailure(String exceptionMessage);
     }
 
-    public void getWeatherData(final OnRequestComplete listener) {
+    public void getWeatherData(Double lat, Double lng, final OnRequestComplete listener) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.openweathermap.org/data/2.5/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -25,7 +25,7 @@ public class WeatherRemoteRepository {
 
         String key = "a839af55ddf7332d5ea98ca734692bfe";
         WeatherAPI api = retrofit.create(WeatherAPI.class);
-        Call<Forecast> call = api.getForecast(53.90, 27.57, "metric", key);
+        Call<Forecast> call = api.getForecast(lat, lng, "metric", key);
 
         call.enqueue(new Callback<Forecast>() {
             @Override
