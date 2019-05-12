@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Weather Forecast</string>
     <string name="title_activity_maps">Map</string>
+    <string name="permission_rationale">Grant access to location to access location</string>
 </resources>
