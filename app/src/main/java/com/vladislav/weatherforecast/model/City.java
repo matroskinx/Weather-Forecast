@@ -1,4 +1,4 @@
-package com.vladislav.weatherforecast.Model;
+package com.vladislav.weatherforecast.model;
 
 public class City{
 	private String country;

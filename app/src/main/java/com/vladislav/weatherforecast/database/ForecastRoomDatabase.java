@@ -1,8 +1,8 @@
-package com.vladislav.weatherforecast.Database;
+package com.vladislav.weatherforecast.database;
 
 import android.content.Context;
 
-import com.vladislav.weatherforecast.Model.ForecastItem;
+import com.vladislav.weatherforecast.model.ForecastItem;
 
 import androidx.room.Database;
 import androidx.room.Room;

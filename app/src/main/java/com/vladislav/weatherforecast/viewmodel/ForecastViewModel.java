@@ -1,10 +1,10 @@
-package com.vladislav.weatherforecast.Viewmodel;
+package com.vladislav.weatherforecast.viewmodel;
 
 import android.app.Application;
 import android.content.Context;
 
-import com.vladislav.weatherforecast.Model.ForecastItem;
-import com.vladislav.weatherforecast.Repository.WeatherRepository;
+import com.vladislav.weatherforecast.model.ForecastItem;
+import com.vladislav.weatherforecast.repository.WeatherRepository;
 
 import java.util.ArrayList;
 import java.util.Calendar;

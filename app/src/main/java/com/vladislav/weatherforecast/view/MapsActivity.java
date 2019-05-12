@@ -1,4 +1,4 @@
-package com.vladislav.weatherforecast.View;
+package com.vladislav.weatherforecast.view;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -27,14 +27,14 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.vladislav.weatherforecast.R;
-import com.vladislav.weatherforecast.Repository.SharedPrerencesRepository;
-import com.vladislav.weatherforecast.Viewmodel.ForecastViewModel;
+import com.vladislav.weatherforecast.repository.SharedPreferencesRepository;
+import com.vladislav.weatherforecast.viewmodel.ForecastViewModel;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private LatLng currentPosition;
-    private SharedPrerencesRepository sharedPrerencesRepo;
+    private SharedPreferencesRepository sharedPrerencesRepo;
     private FusedLocationProviderClient fusedLocationClient;
 
     public static final String LAT_KEY = "key_lat";
@@ -75,7 +75,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        sharedPrerencesRepo = new SharedPrerencesRepository(getApplication()
+        sharedPrerencesRepo = new SharedPreferencesRepository(getApplication()
                 .getSharedPreferences(ForecastViewModel.SHARED_PREFS_NAME, Context.MODE_PRIVATE));
     }
 

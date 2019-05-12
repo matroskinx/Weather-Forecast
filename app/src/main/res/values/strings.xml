@@ -2,4 +2,6 @@
     <string name="app_name">Weather Forecast</string>
     <string name="title_activity_maps">Map</string>
     <string name="permission_rationale">Grant access to location to access location</string>
+    <string name="maps_forecast_button_text">Show forecast</string>
+    <string name="menu_map_text">Map</string>
 </resources>

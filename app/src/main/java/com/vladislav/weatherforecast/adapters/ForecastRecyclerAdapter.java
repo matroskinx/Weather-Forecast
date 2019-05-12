@@ -1,9 +1,9 @@
-package com.vladislav.weatherforecast.Adapters;
+package com.vladislav.weatherforecast.adapters;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.vladislav.weatherforecast.Model.ForecastItem;
+import com.vladislav.weatherforecast.model.ForecastItem;
 import com.vladislav.weatherforecast.R;
 import com.vladislav.weatherforecast.databinding.RvForecastRowBinding;
 import com.vladislav.weatherforecast.databinding.RvTodayRowBinding;
@@ -19,8 +19,8 @@ import androidx.core.util.Pair;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ForecastRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    static final int TODAY_FORECAST = 0;
-    static final int LATER_FORECAST = 1;
+    private static final int TODAY_FORECAST = 0;
+    private static final int LATER_FORECAST = 1;
 
     private Map<Integer, List<ForecastItem>> dayMap;
     private List<ForecastItem> forecastItems;

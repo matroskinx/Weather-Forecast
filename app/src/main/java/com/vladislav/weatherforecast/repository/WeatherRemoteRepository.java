@@ -1,8 +1,8 @@
-package com.vladislav.weatherforecast.Repository;
+package com.vladislav.weatherforecast.repository;
 
 import android.util.Log;
 
-import com.vladislav.weatherforecast.Model.Forecast;
+import com.vladislav.weatherforecast.model.Forecast;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -10,7 +10,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class WeatherRemoteRepository {
+class WeatherRemoteRepository {
     public interface OnRequestComplete {
         void onSuccess(Forecast forecast);
 

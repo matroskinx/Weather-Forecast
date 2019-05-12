@@ -1,7 +1,6 @@
-package com.vladislav.weatherforecast.View;
+package com.vladislav.weatherforecast.view;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -17,23 +16,23 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.vladislav.weatherforecast.Adapters.ForecastRecyclerAdapter;
-import com.vladislav.weatherforecast.Model.ForecastItem;
+import com.vladislav.weatherforecast.adapters.ForecastRecyclerAdapter;
+import com.vladislav.weatherforecast.model.ForecastItem;
 import com.vladislav.weatherforecast.R;
-import com.vladislav.weatherforecast.Viewmodel.ForecastViewModel;
+import com.vladislav.weatherforecast.viewmodel.ForecastViewModel;
 
 import java.util.List;
 import java.util.Map;
 
 public class ForecastActivity extends AppCompatActivity {
 
-    ForecastViewModel viewmodel;
-    ForecastRecyclerAdapter adapter;
-    RecyclerView rv_forecast;
-    LinearLayoutManager linearLayoutManager;
-    ProgressBar progressBar;
+    private ForecastViewModel viewmodel;
+    private ForecastRecyclerAdapter adapter;
+    private RecyclerView rv_forecast;
+    private LinearLayoutManager linearLayoutManager;
+    private ProgressBar progressBar;
 
-    public static final int GET_LOCATION = 91;
+    private static final int GET_LOCATION = 91;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

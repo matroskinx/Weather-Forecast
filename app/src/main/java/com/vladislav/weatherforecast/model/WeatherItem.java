@@ -1,4 +1,4 @@
-package com.vladislav.weatherforecast.Model;
+package com.vladislav.weatherforecast.model;
 
 public class WeatherItem{
 	private String icon;

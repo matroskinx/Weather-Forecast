@@ -1,4 +1,4 @@
-package com.vladislav.weatherforecast.Model;
+package com.vladislav.weatherforecast.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;

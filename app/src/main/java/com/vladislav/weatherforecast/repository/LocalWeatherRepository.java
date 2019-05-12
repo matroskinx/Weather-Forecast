@@ -1,17 +1,17 @@
-package com.vladislav.weatherforecast.Repository;
+package com.vladislav.weatherforecast.repository;
 
 import android.app.Application;
 import android.os.AsyncTask;
 
-import com.vladislav.weatherforecast.Database.ForecastDao;
-import com.vladislav.weatherforecast.Database.ForecastRoomDatabase;
-import com.vladislav.weatherforecast.Model.ForecastItem;
+import com.vladislav.weatherforecast.database.ForecastDao;
+import com.vladislav.weatherforecast.database.ForecastRoomDatabase;
+import com.vladislav.weatherforecast.model.ForecastItem;
 
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
 
-public class LocalWeatherRepository {
+class LocalWeatherRepository {
     private ForecastDao forecastDao;
     private LiveData<List<ForecastItem>> forecastItems;
 

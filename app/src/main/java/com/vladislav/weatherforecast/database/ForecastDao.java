@@ -1,6 +1,6 @@
-package com.vladislav.weatherforecast.Database;
+package com.vladislav.weatherforecast.database;
 
-import com.vladislav.weatherforecast.Model.ForecastItem;
+import com.vladislav.weatherforecast.model.ForecastItem;
 
 import java.util.List;
 

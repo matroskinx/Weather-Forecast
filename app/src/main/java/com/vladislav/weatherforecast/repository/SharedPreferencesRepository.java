@@ -1,15 +1,15 @@
-package com.vladislav.weatherforecast.Repository;
+package com.vladislav.weatherforecast.repository;
 
 import android.content.SharedPreferences;
 
-import static com.vladislav.weatherforecast.Repository.WeatherRepository.SP_LAT;
-import static com.vladislav.weatherforecast.Repository.WeatherRepository.SP_LNG;
+import static com.vladislav.weatherforecast.repository.WeatherRepository.SP_LAT;
+import static com.vladislav.weatherforecast.repository.WeatherRepository.SP_LNG;
 
-public class SharedPrerencesRepository {
+public class SharedPreferencesRepository {
 
-    SharedPreferences sharedPrefs;
+    private SharedPreferences sharedPrefs;
 
-    public SharedPrerencesRepository(SharedPreferences sharedPreferences) {
+    public SharedPreferencesRepository(SharedPreferences sharedPreferences) {
         sharedPrefs = sharedPreferences;
     }
 
