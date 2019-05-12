@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 public class WeatherRepository {
 
@@ -19,8 +20,14 @@ public class WeatherRepository {
     private WeatherRemoteRepository remoteRepo;
     private SharedPrerencesRepository sharedPrefsRepo;
 
+    public MutableLiveData<String> repoErrorMessage = new MutableLiveData<>();
+
     public static String SP_LAT = "sp_lat";
     public static String SP_LNG = "sp_lng";
+
+    public MutableLiveData<String> getRepoErrorMessage() {
+        return repoErrorMessage;
+    }
 
     public WeatherRepository(Application application, SharedPreferences sharedPreferences) {
         localRepo = new LocalWeatherRepository(application);
@@ -30,7 +37,7 @@ public class WeatherRepository {
 
     public LiveData<List<ForecastItem>> getWeather() {
 
-        if(sharedPrefsRepo.hasLatLng()) {
+        if (sharedPrefsRepo.hasLatLng()) {
             double lat = sharedPrefsRepo.getLat();
             double lng = sharedPrefsRepo.getLng();
             refreshDataWithCoords(lat, lng);
@@ -49,6 +56,7 @@ public class WeatherRepository {
             @Override
             public void onFailure(String exceptionMessage) {
                 Log.d("WeatherRepoDB", exceptionMessage);
+                repoErrorMessage.postValue(exceptionMessage);
             }
         });
         sharedPrefsRepo.saveLatLng(lat, lng);

@@ -17,11 +17,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 public class ForecastViewModel extends AndroidViewModel {
-    public MutableLiveData<String> errorMessage = new MutableLiveData<>();
     private WeatherRepository forecastRepo;
     public LiveData<List<ForecastItem>> forecastItems;
-    public double currentLat;
-    public double currentLng;
+    public MutableLiveData<String> errorMessage;
 
     public static String SHARED_PREFS_NAME = "LatLng";
 
@@ -29,6 +27,7 @@ public class ForecastViewModel extends AndroidViewModel {
         super(application);
         forecastRepo = new WeatherRepository(application, getApplication().getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE));
         forecastItems = forecastRepo.getWeather();
+        errorMessage = forecastRepo.getRepoErrorMessage();
     }
 
     public void SetNewCoords(Double lat, Double lng) {

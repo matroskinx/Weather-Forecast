@@ -13,6 +13,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.vladislav.weatherforecast.Adapters.ForecastRecyclerAdapter;
@@ -29,6 +31,7 @@ public class ForecastActivity extends AppCompatActivity {
     ForecastRecyclerAdapter adapter;
     RecyclerView rv_forecast;
     LinearLayoutManager linearLayoutManager;
+    ProgressBar progressBar;
 
     public static final int GET_LOCATION = 91;
 
@@ -37,13 +40,15 @@ public class ForecastActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forecast);
 
-        rv_forecast = (RecyclerView) findViewById(R.id.rv_forecast);
+        rv_forecast = findViewById(R.id.rv_forecast);
+        progressBar = findViewById(R.id.progressBar);
         viewmodel = ViewModelProviders.of(this).get(ForecastViewModel.class);
 
         Observer<String> errorObserver = new Observer<String>() {
             @Override
             public void onChanged(String s) {
                 Toast.makeText(ForecastActivity.this, s, Toast.LENGTH_LONG).show();
+                progressBar.setVisibility(View.GONE);
             }
         };
 
@@ -55,6 +60,7 @@ public class ForecastActivity extends AppCompatActivity {
                 linearLayoutManager = new LinearLayoutManager(ForecastActivity.this);
                 rv_forecast.setLayoutManager(linearLayoutManager);
                 rv_forecast.setAdapter(adapter);
+                progressBar.setVisibility(View.GONE);
             }
         };
 
@@ -86,8 +92,8 @@ public class ForecastActivity extends AppCompatActivity {
             if (resultCode == Activity.RESULT_OK) {
                 Double lat = data.getDoubleExtra(MapsActivity.LAT_KEY, 0);
                 Double lng = data.getDoubleExtra(MapsActivity.LNG_KEY, 0);
-                Toast.makeText(this, String.format("%f %f", lat, lng), Toast.LENGTH_LONG).show();
                 viewmodel.SetNewCoords(lat, lng);
+                progressBar.setVisibility(View.VISIBLE);
 
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 Toast.makeText(this, "No choice", Toast.LENGTH_LONG).show();

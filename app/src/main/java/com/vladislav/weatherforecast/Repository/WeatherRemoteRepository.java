@@ -45,7 +45,7 @@ public class WeatherRemoteRepository {
             @Override
             public void onFailure(Call<Forecast> call, Throwable t) {
                 Log.d("RETROFIT", "exception" + t.getMessage());
-                listener.onFailure("exception ${t.message}");
+                listener.onFailure("Network request failed");
             }
         });
     }
