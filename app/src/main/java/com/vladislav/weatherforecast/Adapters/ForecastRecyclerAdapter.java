@@ -1,13 +1,12 @@
 package com.vladislav.weatherforecast.Adapters;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.vladislav.weatherforecast.Model.ForecastItem;
 import com.vladislav.weatherforecast.R;
+import com.vladislav.weatherforecast.databinding.RvForecastRowBinding;
+import com.vladislav.weatherforecast.databinding.RvTodayRowBinding;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,13 +36,13 @@ public class ForecastRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         if (viewType == TODAY_FORECAST) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View inflatedView = inflater.inflate(R.layout.rv_today_row, parent, false);
-            return new ForecastMainHolder(inflatedView);
+            RvTodayRowBinding rowBinding = RvTodayRowBinding.inflate(inflater, parent, false);
+            return new ForecastMainHolder(rowBinding);
 
         } else {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View inflatedView = inflater.inflate(R.layout.rv_forecast_row, parent, false);
-            return new ForecastHolder(inflatedView);
+            RvForecastRowBinding forecastBinding = RvForecastRowBinding.inflate(inflater, parent, false);
+            return new ForecastHolder(forecastBinding);
         }
     }
 
@@ -82,22 +81,12 @@ public class ForecastRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     class ForecastHolder extends RecyclerView.ViewHolder {
-        View view;
+        RvForecastRowBinding binding;
         List<ForecastItem> dayForecast;
-        ImageView forecastIcon;
-        TextView forecastDesc;
-        TextView forecastText;
-        TextView forecastTempHigh;
-        TextView forecastTempLow;
 
-        ForecastHolder(View v) {
-            super(v);
-            this.view = v;
-            forecastIcon = view.findViewById(R.id.weather_icon);
-            forecastDesc = view.findViewById(R.id.weather_desc);
-            forecastText = view.findViewById(R.id.weather_date);
-            forecastTempHigh = view.findViewById(R.id.weather_temp_high);
-            forecastTempLow = view.findViewById(R.id.weather_temp_low);
+        ForecastHolder(RvForecastRowBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
 
         void bindForecastItem(List<ForecastItem> dayForecast) {
@@ -114,97 +103,59 @@ public class ForecastRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
             String weatherCondition = dayForecast.get(0).getIcon();
             int weatherIcon = getIconId(weatherCondition);
 
-            forecastIcon.setImageResource(weatherIcon);
-            forecastText.setText(formattedDate);
-            forecastDesc.setText(desc);
-            forecastTempLow.setText(tempLow);
-            forecastTempHigh.setText(tempHigh);
+            binding.setIcon(weatherIcon);
+            binding.setDate(formattedDate);
+            binding.setDescription(desc);
+            binding.setTemperatureLow(tempLow);
+            binding.setTemperatureHigh(tempHigh);
         }
     }
 
     class ForecastMainHolder extends RecyclerView.ViewHolder {
-
-        View view;
+        RvTodayRowBinding binding;
         List<ForecastItem> fiveItemsForecast;
 
-        ImageView forecastIconOne;
-        ImageView forecastIconTwo;
-        ImageView forecastIconThree;
-        ImageView forecastIconFour;
-        ImageView forecastIconFive;
-
-        ImageView weatherIconMain;
-
-        TextView weatherTimeOne;
-        TextView weatherTimeTwo;
-        TextView weatherTimeThree;
-        TextView weatherTimeFour;
-        TextView weatherTimeFive;
-
-        TextView weatherTodayTemp;
-        TextView weatherTodayCity;
-        TextView weatherTodayDesc;
-        TextView weatherTodayDate;
-
-        ForecastMainHolder(View v) {
-            super(v);
-            this.view = v;
-            forecastIconOne = view.findViewById(R.id.weather_icon_one);
-            forecastIconTwo = view.findViewById(R.id.weather_icon_two);
-            forecastIconThree = view.findViewById(R.id.weather_icon_three);
-            forecastIconFour = view.findViewById(R.id.weather_icon_four);
-            forecastIconFive = view.findViewById(R.id.weather_icon_five);
-
-            weatherIconMain = view.findViewById(R.id.weather_icon_main);
-
-            weatherTimeOne = view.findViewById(R.id.weather_time_one);
-            weatherTimeTwo = view.findViewById(R.id.weather_time_two);
-            weatherTimeThree = view.findViewById(R.id.weather_time_three);
-            weatherTimeFour = view.findViewById(R.id.weather_time_four);
-            weatherTimeFive = view.findViewById(R.id.weather_time_five);
-
-            weatherTodayTemp = view.findViewById(R.id.weather_today_temp_high);
-            weatherTodayCity = view.findViewById(R.id.weather_today_city);
-            weatherTodayDesc = view.findViewById(R.id.weather_today_desc);
-            weatherTodayDate = view.findViewById(R.id.weather_today_date);
+        ForecastMainHolder(RvTodayRowBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
 
         void bindMainForecastItem(List<ForecastItem> fiveItemsForecast) {
             this.fiveItemsForecast = fiveItemsForecast;
 
             int iconOneId = getIconId(fiveItemsForecast.get(0).getIcon());
-            weatherIconMain.setImageResource(iconOneId);
-            forecastIconOne.setImageResource(iconOneId);
             int iconTwoId = getIconId(fiveItemsForecast.get(1).getIcon());
-            forecastIconTwo.setImageResource(iconTwoId);
             int iconThreeId = getIconId(fiveItemsForecast.get(2).getIcon());
-            forecastIconThree.setImageResource(iconThreeId);
             int iconFourId = getIconId(fiveItemsForecast.get(3).getIcon());
-            forecastIconFour.setImageResource(iconFourId);
             int iconFiveId = getIconId(fiveItemsForecast.get(4).getIcon());
-            forecastIconFive.setImageResource(iconFiveId);
 
             String timeOne = getFormattedTime(fiveItemsForecast.get(0).getDt(), "HH:mm");
-            weatherTimeOne.setText(timeOne);
             String timeTwo = getFormattedTime(fiveItemsForecast.get(1).getDt(), "HH:mm");
-            weatherTimeTwo.setText(timeTwo);
             String timeThree = getFormattedTime(fiveItemsForecast.get(2).getDt(), "HH:mm");
-            weatherTimeThree.setText(timeThree);
             String timeFour = getFormattedTime(fiveItemsForecast.get(3).getDt(), "HH:mm");
-            weatherTimeFour.setText(timeFour);
             String timeFive = getFormattedTime(fiveItemsForecast.get(4).getDt(), "HH:mm");
-            weatherTimeFive.setText(timeFive);
 
             String temp = String.format("%.0f\u00b0", fiveItemsForecast.get(0).getTemp());
-
-            weatherTodayTemp.setText(temp);
-            weatherTodayCity.setText(fiveItemsForecast.get(0).getCity());
-            weatherTodayDesc.setText(fiveItemsForecast.get(0).getDescription());
 
             Calendar cal = Calendar.getInstance();
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM");
             String currentDate = dateFormat.format(cal.getTime());
-            weatherTodayDate.setText(currentDate);
+
+            binding.setDate(currentDate);
+            binding.setDescription(fiveItemsForecast.get(0).getDescription());
+            binding.setTemperature(temp);
+            binding.setIconMainRes(iconOneId);
+            binding.setIconOne(iconOneId);
+            binding.setIconTwo(iconTwoId);
+            binding.setIconThree(iconThreeId);
+            binding.setIconFour(iconFourId);
+            binding.setIconFive(iconFiveId);
+            binding.setTimeOne(timeOne);
+            binding.setTimeTwo(timeTwo);
+            binding.setTimeThree(timeThree);
+            binding.setTimeFour(timeFour);
+            binding.setTimeFive(timeFive);
+            binding.setCity(fiveItemsForecast.get(0).getCity());
         }
     }
 
