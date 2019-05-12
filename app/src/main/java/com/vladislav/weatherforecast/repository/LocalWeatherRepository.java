@@ -25,24 +25,6 @@ class LocalWeatherRepository {
         forecastItems = forecastDao.getAllForecastItems();
     }
 
-    public void insertAll(List<ForecastItem> forecastItems) {
-        new InsertAllAsyncTask(forecastDao).execute(forecastItems);
-    }
-
-    private static class InsertAllAsyncTask extends AsyncTask<List<ForecastItem>, Void, Void> {
-        private ForecastDao mAsyncTaskDao;
-
-        InsertAllAsyncTask(ForecastDao dao) {
-            mAsyncTaskDao = dao;
-        }
-
-        @Override
-        protected Void doInBackground(List<ForecastItem>... lists) {
-            mAsyncTaskDao.insertAll(lists[0]);
-            return null;
-        }
-    }
-
     public void dropAndInsertAll(List<ForecastItem> forecastItems) {
         new DropThenInsertAllAsyncTask(forecastDao).execute(forecastItems);
     }

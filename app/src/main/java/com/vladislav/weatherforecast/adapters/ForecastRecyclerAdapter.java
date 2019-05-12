@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
@@ -141,7 +142,7 @@ public class ForecastRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
             String temp = String.format("%.0f\u00b0", fiveItemsForecast.get(0).getTemp());
 
             Calendar cal = Calendar.getInstance();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM", Locale.getDefault());
             String currentDate = dateFormat.format(cal.getTime());
 
             binding.setDate(currentDate);
