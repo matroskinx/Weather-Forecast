@@ -18,6 +18,9 @@ import androidx.annotation.NonNull;
 import androidx.core.util.Pair;
 import androidx.recyclerview.widget.RecyclerView;
 
+import static com.vladislav.weatherforecast.utils.AdapterUtils.findMinMaxTemp;
+import static com.vladislav.weatherforecast.utils.AdapterUtils.getFormattedTime;
+
 public class ForecastRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TODAY_FORECAST = 0;
     private static final int LATER_FORECAST = 1;
@@ -197,26 +200,5 @@ public class ForecastRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
         return value;
     }
 
-    private Pair<Double, Double> findMinMaxTemp(List<ForecastItem> day) {
 
-        Double min = day.get(0).getTemp();
-        Double max = day.get(0).getTemp();
-
-        for (ForecastItem item : day) {
-            Double temp = item.getTemp();
-            if (temp > max) {
-                max = temp;
-            } else if (temp < min) {
-                min = temp;
-            }
-        }
-        return new Pair<>(min, max);
-    }
-
-    private String getFormattedTime(int timestamp, String pattern) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(timestamp * 1000L);
-        SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
-        return dateFormat.format(cal.getTime());
-    }
 }

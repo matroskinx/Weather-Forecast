@@ -4,7 +4,7 @@ import android.widget.ImageView;
 
 import androidx.databinding.BindingAdapter;
 
-class ImageResourceBindingAdapter {
+public class ImageResourceBindingAdapter {
     @BindingAdapter("android:src")
     public static void setImageResource(ImageView imageView, int resourceId) {
         imageView.setImageResource(resourceId);
