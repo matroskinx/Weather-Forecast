@@ -13,7 +13,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.vladislav.weatherforecast.adapters.ForecastRecyclerAdapter;
@@ -31,6 +33,8 @@ public class ForecastActivity extends AppCompatActivity {
     private RecyclerView rv_forecast;
     private LinearLayoutManager linearLayoutManager;
     private ProgressBar progressBar;
+    private TextView introText;
+    private ImageView introIcon;
 
     private static final int GET_LOCATION = 91;
 
@@ -41,6 +45,9 @@ public class ForecastActivity extends AppCompatActivity {
 
         rv_forecast = findViewById(R.id.rv_forecast);
         progressBar = findViewById(R.id.progressBar);
+        introText = findViewById(R.id.intro_text);
+        introIcon = findViewById(R.id.intro_icon);
+
         viewmodel = ViewModelProviders.of(this).get(ForecastViewModel.class);
 
         Observer<String> errorObserver = new Observer<String>() {
@@ -54,12 +61,16 @@ public class ForecastActivity extends AppCompatActivity {
         Observer<List<ForecastItem>> mainObserver = new Observer<List<ForecastItem>>() {
             @Override
             public void onChanged(List<ForecastItem> forecastItems) {
-                Map<Integer, List<ForecastItem>> dayMap = viewmodel.DivideForecastByDays(forecastItems);
-                adapter = new ForecastRecyclerAdapter(dayMap, forecastItems);
-                linearLayoutManager = new LinearLayoutManager(ForecastActivity.this);
-                rv_forecast.setLayoutManager(linearLayoutManager);
-                rv_forecast.setAdapter(adapter);
-                progressBar.setVisibility(View.GONE);
+                if (forecastItems.size() != 0) {
+                    Map<Integer, List<ForecastItem>> dayMap = viewmodel.DivideForecastByDays(forecastItems);
+                    adapter = new ForecastRecyclerAdapter(dayMap, forecastItems);
+                    linearLayoutManager = new LinearLayoutManager(ForecastActivity.this);
+                    rv_forecast.setLayoutManager(linearLayoutManager);
+                    rv_forecast.setAdapter(adapter);
+                    progressBar.setVisibility(View.GONE);
+                    introIcon.setVisibility(View.GONE);
+                    introText.setVisibility(View.GONE);
+                }
             }
         };
 

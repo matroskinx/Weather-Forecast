@@ -62,11 +62,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra(LAT_KEY, currentPosition.latitude);
-                returnIntent.putExtra(LNG_KEY, currentPosition.longitude);
-                setResult(Activity.RESULT_OK, returnIntent);
-                finish();
+                if (currentPosition != null) {
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra(LAT_KEY, currentPosition.latitude);
+                    returnIntent.putExtra(LNG_KEY, currentPosition.longitude);
+                    setResult(Activity.RESULT_OK, returnIntent);
+                    finish();
+                } else {
+                    setResult(Activity.RESULT_CANCELED);
+                    finish();
+                }
             }
         });
 
